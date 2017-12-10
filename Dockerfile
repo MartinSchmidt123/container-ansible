@@ -2,10 +2,13 @@ FROM debian:stretch
 LABEL maintainer "Martin Schmidt <docker@private-data.de>"
 
 RUN apt-get update && \
-    apt-get install -y ansible python-mysqldb \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get install --no-install-recommends -y \
+      python-wheel python-dev python-setuptools python-pip python-mysqldb && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN echo '[local]\nlocalhost\n' > /etc/ansible/hosts
+RUN pip install ansible
+
+RUN mkdir /etc/ansible/ && \
+    echo '[local]\nlocalhost\n' > /etc/ansible/hosts
 
 CMD bash
